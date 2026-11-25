@@ -1,65 +1,217 @@
-<!-- index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Astrape OS</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            text-align: center;
-            padding: 2em;
-            background-color: #0a0a0a;
-            color: #f0f0f0;
-        }
-
-        a {
-            color: #9ecfff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-
-        h1 {
-            font-size: 2.5em;
-        }
-
-        .sub {
-            color: #ccc;
-            font-style: italic;
-            margin-bottom: 2em;
-        }
-
-        .buttons a {
-            display: block;
-            margin: 1em 0;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0d12">
+  <meta name="description" content="Astrape is an independent, local-first AI project. Explore Astrape Core, an open-source foundation for voice interaction and modular AI orchestration.">
+  <meta property="og:title" content="Astrape — Lightning that listens">
+  <meta property="og:description" content="Intelligence on your terms. An independent, local-first AI project.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://astrape-os.com/">
+  <link rel="canonical" href="https://astrape-os.com/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Astrape — Lightning that listens</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0d12;
+      --panel: #10151c;
+      --text: #e9edf1;
+      --muted: #a5b0bd;
+      --line: #29333e;
+      --accent: #a9cfff;
+      --max: 1180px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.65; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+    a:hover { color: var(--accent); }
+    .wrap { width: min(var(--max), calc(100% - 64px)); margin-inline: auto; }
+    .skip { position: absolute; left: 16px; top: -100px; padding: 10px 16px; background: var(--text); color: var(--bg); z-index: 10; }
+    .skip:focus { top: 16px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 25px; border-bottom: 1px solid var(--line); }
+    .brand { display: inline-flex; align-items: center; gap: 11px; letter-spacing: .23em; font-size: 13px; font-weight: 750; }
+    .brand svg { width: 28px; height: 28px; color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 13px; color: var(--muted); }
+    .nav-links a { white-space: nowrap; }
+    .mono { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow { display: flex; align-items: center; gap: 11px; color: var(--accent); }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    .hero { min-height: 540px; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 28px; padding-block: 88px 80px; position: relative; }
+    .hero-copy { position: relative; z-index: 1; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(3rem, 6.7vw, 6.25rem); font-weight: 560; line-height: .99; letter-spacing: -.07em; margin: 24px 0; }
+    h1 span { color: var(--accent); display: block; }
+    .lead { font-size: clamp(1rem, 1.6vw, 1.18rem); color: var(--muted); max-width: 520px; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 20px; min-height: 48px; font-size: 14px; font-weight: 650; border: 1px solid var(--line); transition: background .18s, border-color .18s; }
+    .primary { background: var(--accent); border-color: var(--accent); color: #0a1729; }
+    .primary:hover { background: #d6e8ff; color: #0a1729; }
+    .secondary:hover { border-color: var(--accent); background: var(--panel); }
+    .hero-art { position: relative; min-width: 0; margin: 0; }
+    .hero-art svg { display: block; width: 100%; max-height: 440px; }
+    .art-label { position: absolute; bottom: 0; right: 0; color: var(--muted); font-size: 10px; letter-spacing: .12em; }
+    .status { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; border-block: 1px solid var(--line); padding: 17px 0; color: var(--muted); }
+    .status strong { color: var(--text); font-weight: 500; }
+    .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: 1px; }
+    section { padding-block: 76px; }
+    .section-title { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 550; line-height: 1.15; letter-spacing: -.045em; margin: 14px 0 22px; }
+    .section-intro { max-width: 660px; color: var(--muted); }
+    .principles { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); margin-top: 36px; }
+    .principle { padding: 30px; background: var(--panel); }
+    .principle + .principle { border-left: 1px solid var(--line); }
+    .principle svg { width: 31px; height: 31px; color: var(--accent); margin-bottom: 24px; }
+    h3 { font-size: 19px; font-weight: 600; letter-spacing: -.02em; margin-bottom: 10px; }
+    .principle p { color: var(--muted); font-size: 14px; margin-bottom: 0; }
+    .core { border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .core p { color: var(--muted); max-width: 560px; }
+    .diagram { border: 1px solid var(--line); background: var(--panel); padding: 28px; }
+    .diagram-title { color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 24px; }
+    .node { border: 1px solid #43576d; padding: 13px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 14px; }
+    .node small { font-size: 11px; color: var(--accent); }
+    .connector { height: 22px; width: 1px; margin-inline: auto; background: #627c9b; }
+    .diagram p { margin: 20px 0 0; font-size: 12px; color: var(--muted); }
+    .closing { border-block: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 36px; }
+    .closing h2 { max-width: 700px; margin: 14px 0; }
+    .closing p { color: var(--muted); max-width: 600px; margin-bottom: 0; }
+    .closing .button { flex-shrink: 0; }
+    footer { padding-block: 30px 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; color: var(--muted); font-size: 12px; }
+    footer a { text-decoration: underline; text-underline-offset: 3px; }
+    @media (max-width: 800px) {
+      .wrap { width: calc(100% - 40px); }
+      .hero { min-height: unset; grid-template-columns: 1fr; padding-block: 64px 42px; gap: 12px; }
+      .hero-art { width: min(100%, 380px); margin-inline: auto; }
+      .hero-art svg { max-height: 300px; }
+      .core { grid-template-columns: 1fr; gap: 32px; }
+      section { padding-block: 52px; }
+      .principles { grid-template-columns: 1fr; }
+      .principle + .principle { border-left: 0; border-top: 1px solid var(--line); }
+      .principle { padding: 24px; }
+      .closing { align-items: flex-start; flex-direction: column; gap: 24px; }
+      .nav-links { gap: 16px; }
+    }
+    @media (max-width: 400px) {
+      .nav { align-items: flex-start; gap: 16px; flex-direction: column; }
+      .actions .button { width: 100%; }
+      .node { flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .button { transition: none; }
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Astrape</h1>
-        <div class="sub">Lightning that listens. A local AI assistant, on your terms.</div>
-
-        <p>Astrape Core is a modular, privacy‑first voice assistant built to run offline, speak naturally, and obey you
-            — not the cloud.</p>
-
-        <div class="buttons">
-            <a href="https://github.com/loraxwantstoplay/astrape-core" target="_blank">🔗 View the Project on GitHub</a>
-            <a href="https://github.com/sponsors/loraxwantstoplay" target="_blank">❤️ Sponsor the Project</a>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="wrap">
+    <header class="nav">
+      <a class="brand" href="./" aria-label="Astrape home">
+        <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M18 2 5 19h10l-1 11L27 12H17z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        ASTRAPE
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#principles">Philosophy</a>
+        <a href="#core">Core</a>
+        <a href="https://github.com/loraxwantstoplay/astrape-core">GitHub ↗</a>
+      </nav>
+    </header>
+    <main id="main">
+      <div class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow mono">Independent · Local-first</div>
+          <h1>Lightning<br>that <span>listens.</span></h1>
+          <p class="lead">Intelligence on your terms. Astrape is an independent AI project built around local operation, modularity and the freedom to choose how your software works.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/loraxwantstoplay/astrape-core">Explore Astrape Core <span aria-hidden="true">↗</span></a>
+            <a class="button secondary" href="#principles">The philosophy <span aria-hidden="true">↓</span></a>
+          </div>
         </div>
-
-        <footer style="margin-top: 3em; font-size: 0.9em; color: #666;">
-            Built by an independent dev. Open source. AGPLv3.
-        </footer>
-    </div>
+        <figure class="hero-art" aria-hidden="true">
+          <svg viewBox="0 0 460 460" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="halo"><stop stop-color="#355d91" stop-opacity=".28"/><stop offset="1" stop-color="#0a0d12" stop-opacity="0"/></radialGradient>
+              <linearGradient id="bolt" x1="120" y1="25" x2="330" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#f1f7ff"/><stop offset=".5" stop-color="#b4d6ff"/><stop offset="1" stop-color="#507caa"/></linearGradient>
+              <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" stroke="#283644" stroke-width=".6"/></pattern>
+              <radialGradient id="fade"><stop stop-color="white"/><stop offset="1" stop-color="black"/></radialGradient>
+              <mask id="gridmask"><rect width="460" height="460" fill="url(#fade)"/></mask>
+            </defs>
+            <circle cx="230" cy="230" r="218" fill="url(#halo)"/>
+            <rect width="460" height="460" fill="url(#grid)" mask="url(#gridmask)"/>
+            <circle cx="230" cy="230" r="190" stroke="#263748" stroke-dasharray="2 7"/>
+            <circle cx="230" cy="230" r="157" stroke="#40566f" stroke-width=".8"/>
+            <circle cx="230" cy="230" r="119" stroke="#2b4055" stroke-width=".8"/>
+            <path d="M230 19v36m0 350v36M19 230h36m350 0h36M76 76l25 25m258 258 25 25M384 76l-25 25M101 359l-25 25" stroke="#607f9f" stroke-width="1"/>
+            <path d="M230 40 420 230 230 420 40 230Z" stroke="#324b63" stroke-width=".7"/>
+            <path d="M267 65 113 256h104l-26 140 155-200H241z" fill="#7caeea" opacity=".08"/>
+            <path d="M267 65 113 256h104l-26 140 155-200H241z" stroke="url(#bolt)" stroke-width="3" stroke-linejoin="round" fill="#101c2b"/>
+            <path d="m267 65-82 164h84l-78 167" stroke="#8ebbe8" stroke-opacity=".65" stroke-width="1.2"/>
+            <circle cx="230" cy="40" r="3" fill="#a9cfff"/><circle cx="420" cy="230" r="3" fill="#a9cfff"/><circle cx="40" cy="230" r="3" fill="#a9cfff"/>
+            <path d="M36 70V36h34m320 0h34v34m0 320v34h-34m-320 0H36v-34" stroke="#5e7897" stroke-width="1"/>
+          </svg>
+          <figcaption class="art-label mono">A spark in the storm.</figcaption>
+        </figure>
+      </div>
+      <div class="status mono">
+        <span><span class="dot"></span><strong>Public project</strong> / Pre-alpha</span>
+        <span>Independent development · Open-source core</span>
+      </div>
+      <section id="principles" aria-labelledby="principles-title">
+        <div class="eyebrow mono">01 / Philosophy</div>
+        <h2 class="section-title" id="principles-title">Software should answer to you.</h2>
+        <p class="section-intro">A line in the sand. Astrape starts with a simple conviction: the systems we rely on should be understandable, adaptable and under our control.</p>
+        <div class="principles">
+          <article class="principle">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="5" width="24" height="17" rx="2"/><path d="M10 28h12m-6-6v6M9 11h4m-4 5h9"/></svg>
+            <h3>Local-first by design</h3>
+            <p>Designed for locally hosted AI, with the freedom to select the services and hardware you trust.</p>
+          </article>
+          <article class="principle">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m16 3 12 7v12l-12 7-12-7V10zM4 10l12 7 12-7M16 17v12M10 7l12 7v7"/></svg>
+            <h3>Modularity over lock-in</h3>
+            <p>Replaceable components and configuration-driven choices instead of a single prescribed stack.</p>
+          </article>
+          <article class="principle">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M16 3 27 8v8c0 6-5 11-11 14C10 27 5 22 5 16V8z"/><path d="m11 16 4 4 7-9"/></svg>
+            <h3>Privacy through choice</h3>
+            <p>Choose where processing happens. Local and external providers have different privacy implications; the choice belongs to you.</p>
+          </article>
+        </div>
+      </section>
+      <section id="core" class="core" aria-labelledby="core-title">
+        <div>
+          <div class="eyebrow mono">02 / The public foundation</div>
+          <h2 class="section-title" id="core-title">Astrape Core.</h2>
+          <p>The open-source foundation for modular AI orchestration. The initial public release explores natural voice interaction, speech integration and configurable inference.</p>
+          <p>Core is an early-stage project, not a finished consumer product. Explore the source, experiment with the existing voice loop and contribute to the public foundation.</p>
+          <a class="button secondary" href="https://github.com/loraxwantstoplay/astrape-core">Read the source <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="diagram" aria-label="Public Core voice interaction flow">
+          <div class="diagram-title mono">Core / Voice interaction</div>
+          <div class="node"><span>Speech recognition</span><small>INPUT</small></div>
+          <div class="connector" aria-hidden="true"></div>
+          <div class="node"><span>Language inference</span><small>PROCESS</small></div>
+          <div class="connector" aria-hidden="true"></div>
+          <div class="node"><span>Speech synthesis</span><small>OUTPUT</small></div>
+          <p>Conceptual flow of the public voice loop. Provider behavior depends on configuration.</p>
+        </div>
+      </section>
+      <section class="closing" aria-labelledby="support-title">
+        <div>
+          <div class="eyebrow mono">03 / Independent by choice</div>
+          <h2 id="support-title" class="section-title">Built to serve, not surveil.</h2>
+          <p>Astrape is independently developed. Explore the public project, share feedback or support its development.</p>
+        </div>
+        <a class="button secondary" href="https://github.com/sponsors/loraxwantstoplay">Support the project <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+    <footer>
+      <span>ASTRAPE / Independent development</span>
+      <span><a href="https://github.com/loraxwantstoplay/astrape-core">Astrape Core</a> · AGPLv3 · <a href="https://github.com/loraxwantstoplay/astrape-os-site">Site source</a></span>
+    </footer>
+  </div>
 </body>
-
 </html>
